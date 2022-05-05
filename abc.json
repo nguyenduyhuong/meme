@@ -1,0 +1,5 @@
+{
+    "receiver_id": "ref-finance-101.testnet",
+    "amount": "1000000000000000000000",
+    "msg": "{\"force\":0,\"actions\":[{\"pool_id\":387,\"token_in\":\"wrap.testnet\",\"token_out\":\"token11.duyhuongtest.testnet\",\"amount_in\":\"1000000000000000000000\",\"min_amount_out\":\"82323310\"}]}"
+  }
