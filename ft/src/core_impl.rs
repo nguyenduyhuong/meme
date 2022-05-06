@@ -15,25 +15,6 @@ const GAS_FOR_FT_TRANSFER_CALL: Gas = Gas(25_000_000_000_000 + GAS_FOR_RESOLVE_T
 
 const NO_DEPOSIT: Balance = 0;
 
-#[ext_contract(ext_ref)]
-trait RefFinance {
-    pub fn add_liquidity(
-        &mut self,
-        pool_id: u64,
-        amounts: Vec<U128>,
-        min_amounts: Option<Vec<U128>>,
-    ) -> U128;
-}
-#[ext_contract(ext_wnear)]
-trait wnear {
-    fn ft_transfer_call(
-        &mut self,
-        receiver_id: AccountId,
-        amount: U128,
-        memo: Option<String>,
-        msg: String,
-    ) -> PromiseOrValue<U128>;
-}
 #[ext_contract(ext_self)]
 trait FungibleTokenResolver {
     fn ft_resolve_transfer(

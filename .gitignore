@@ -29,3 +29,8 @@ yarn-debug.log*
 yarn-error.log*
 
 **/target
+
+swap.sh
+run.sh
+test.sh
+testSwap.sh
