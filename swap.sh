@@ -1,13 +1,38 @@
-#near call wrap.testnet --accountId=duyhuongtest.testnet ft_transfer '{"receiver_id": "ref-finance-101.testnet", "amount": "1000000000000000000000"}' --amount=0.000000000000000000000001
- #near call ref-finance-101.testnet --accountId=duyhuongtest.testnet register_tokens '{"token_ids": ["skyward.fakes.testnet"]}' --amount=0.000000000000000000000001
+contractId="addliquid2.duyhuongtest.testnet"
 
-#near call wrap.testnet --accountId=duyhuongtest.testnet ft_transfer_call '{"receiver_id":"ref-finance-101.testnet","amount":"1000000000000000000000","msg":"{"force":0,"actions":[{"pool_id":387,"token_in":"wrap.testnet","token_out":"token11.duyhuongtest.testnet","amount_in":"1000000000000000000000","min_amount_out":"82323310"}]}"}' --amount=0.000000000000000000000001
-#near call ref-finance-101.testnet swap '{"actions":[{ "pool_id" : 50, "token_in" : "skyward.fakes.testnet","amount_in" : "1000000000000000", "token_out" :"wrap.testnet","min_amount_out":"8247325"}]}' --amount=0.00125 --accountId=duyhuongtest.testnet
+near create-account $contractId --masterAccount duyhuongtest.testnet --initialBalance 3
+near deploy --wasmFile res/addliquid.wasm --accountId $contractId
 
 
-near call wrap.testnet --accountId=devhuong.testnet ft_transfer_call '{
-   "receiver_id": "ref-finance-101.testnet",
-  "amount": "1000000000000000000000",
-  "msg": "{\"force\":0,\"actions\":[{\"pool_id\":411,\"token_in\":\"wrap.testnet\",\"token_out\":\"test.duyhuongtest.testnet\",\"amount_in\":\"1000000000000000000000\",\"min_amount_out\":\"0\"}]}"
-}' --amount=0.000000000000000000000001 --gas=300000000000000
+ near call $contractId new '{"pool_id": 380, "token":"token2.duyhuongtest.testnet","owner_id" : "'$contractId'"}' --accountId duyhuongtest.testnet
+# setup
+near call token2.duyhuongtest.testnet --accountId=duyhuongtest.testnet storage_deposit '{"account_id": "'$contractId'"}' --amount=0.00125
+near call token2.duyhuongtest.testnet --accountId=duyhuongtest.testnet ft_transfer '{"receiver_id": "'$contractId'", "amount": "10000000000000"}' --amount=0.000000000000000000000001
+near call wrap.testnet --accountId=duyhuongtest.testnet storage_deposit '{"account_id": "'$contractId'"}' --amount=0.00125
+near call wrap.testnet --accountId=duyhuongtest.testnet ft_transfer '{"receiver_id": "'$contractId'", "amount": "100000000000000000000"}' --amount=0.000000000000000000000001
+ near call ref-finance-101.testnet register_tokens '{"token_ids": ["token2.duyhuongtest.testnet", "wrap.testnet"]}' --accountId addliquid2.duyhuongtest.testnet --amount=0.000000000000000000000001
+#near call ref-finance-101.testnet storage_deposit '' --accountId addliquid2.duyhuongtest.testnet --amount 0.1
+
+
+near view token2.duyhuongtest.testnet ft_balance_of '{"account_id": "'$contractId'"}'
+near view token2.duyhuongtest.testnet ft_balance_of '{"account_id": "ref-finance-101.testnet"}'
+near call $contractId swapAndLiquidify '{"amountSwap":1000,"amounts": ["999999982000", "49206020910007191848"]}' --accountId $contractId --amount=0.000000000000000000000001 --gas=300000000000000
+near view token2.duyhuongtest.testnet ft_balance_of '{"account_id": "ref-finance-101.testnet"}'
+
+
+# near call wrap.testnet --accountId=duyhuongtest.testnet storage_deposit '{"account_id": "'$contractId'"}' --amount=0.00225
+# near call wrap.testnet --accountId=duyhuongtest.testnet ft_transfer '{"receiver_id": "'$contractId'", "amount": "100000000000000000"}' --amount=0.000000000000000000000001
+
+
+#near call ref-finance-101.testnet storage_deposit '' --accountId addliquid2.duyhuongtest.testnet --amount 0.1
+# near call ref-finance-101.testnet register_tokens '{"token_ids": ["token2.duyhuongtest.testnet", "wrap.testnet"]}' --accountId addliquid2.duyhuongtest.testnet --amount=0.000000000000000000000001
+# near view ref-finance-101.testnet get_user_whitelisted_tokens '{"account_id":"'$contractId'"}'
+# near view ref-finance-101.testnet get_user_whitelisted_tokens '{"account_id":"addliquid1.duyhuongtest.testnet"}'
+
+
+
+
+ 
+
+
 
